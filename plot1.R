@@ -34,6 +34,16 @@ pm <- readRDS("summarySCC_PM25.rds")
 pmtot <- pm %>% group_by(year) %>% summarise(Emissions = sum(Emissions))
 
 # Plot the emissions levels vs. year along with the linear regression line
+#
+# Design decision: As PM25 emissions can be cotrolled only "approximately"
+# (due to high number of influencing factors) as a user of this grpah I'd be 
+# more interested in the trend over years rather than in the exact shape of
+# the emissions curve. Hence the yearly emisions are marked as points 
+# and a trend line (linear regression) is added. This kind of plot allows to
+# answer the question if the total emissions decreased between 1999 and 2008
+# (compare extreme point values) and provides additional information if
+# the overall trend is also decreasing.
+
 png(pngFile)
 plot(pmtot, ylab = "Emissions [tons]", xaxt = "n")
 abline(lm(Emissions ~ year, pmtot),col = "red")
