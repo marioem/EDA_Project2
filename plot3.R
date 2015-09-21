@@ -39,7 +39,7 @@ BaltimoreFips <- "24510"
 
 pm <- readRDS(summaryFile)
 
-# Calculate total emissions levels in Baltimore City for each year
+# Calculate emissions levels in Baltimore City for each year for each of 4 types
 baltpmtype <- pm %>% filter(fips == BaltimoreFips) %>% group_by(type, year) %>% summarise(Emissions = sum(Emissions))
 
 # Plot the emissions levels vs. year along with the linear regression line
