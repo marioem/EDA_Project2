@@ -56,8 +56,8 @@ coalcomb <- subpm %>% group_by(year) %>% summarise(Emissions = sum(Emissions))
 
 # Plot the emissions levels vs. year along with the linear regression line
 #
-# Design decision: In order to support answer the question *how* emission changed
-# a line graph option was chosen.
+# Design decision: In order to support the answer to the question *how* emission
+# changed a line graph option was chosen.
 
 png(pngFile, width = 640)
 ggpl <- ggplot(data = coalcomb, aes(year, Emissions))
@@ -66,6 +66,6 @@ ggpl <- ggpl + geom_line(size = 2, linetype = 4)
 ggpl <- ggpl + ylab("Emissions [tons]")
 ggpl <- ggpl + ggtitle(expression('U.S. Total PM'[2.5]*' Carbon Combustion-related Emission in Years 1999-2008'))
 ggpl <- ggpl + theme(plot.title = element_text(hjust = 0.5))
-ggpl <- ggpl + scale_x_continuous(breaks = baltpmtype$year, labels = baltpmtype$year)
+ggpl <- ggpl + scale_x_continuous(breaks = coalcomb$year, labels = coalcomb$year)
 ggpl
 dev.off()

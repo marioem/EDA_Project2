@@ -1,22 +1,22 @@
 #################################################################################
 #
-#  Filename: plot5.R
+#  Filename: plot6.R
 #   Version: 1.0.0
 #      Date: 2015.09.21
 #    Author: Mariusz Musiał
 # Rev. Info: 1.0.0 - initial version of the script
 # 
 # This script generates a plot of PM25 motor vehicle-related emissions in
-# Baltimore City in years 1999-2008. For detailed discussion of data selection
-# and presentation see comments in the code.
+# Baltimore City and LA County in years 1999-2008. For detailed discussion
+# of data selection and presentation see comments in the code.
 # ggplot2 grapics system is used.
 # Original data is available at: https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip
 # More information about data: http://www.epa.gov/ttn/chief/eiinformation.html
 # 
 #     Input: summarySCC_PM25.rds, Source_Classification_Code.rds files located
 #            in the current working directory
-#    Output: plot5.png written to the current working directory
-# Execution: source(plot5.R)
+#    Output: plot6.png written to the current working directory
+# Execution: source(plot6.R)
 # 
 # Prerequisites: 1) this script and the data files are located in the current
 #                   working directory
@@ -35,9 +35,10 @@ if(!require("ggplot2")) {
 
 summaryFile <- "summarySCC_PM25.rds"
 sccFile <- "Source_Classification_Code.rds"
-pngFile <- "plot5.png"
+pngFile <- "plot6.png"
 
 BaltimoreFips <- "24510"
+LACountyFips <- "06037"
 
 pm <- readRDS(summaryFile)
 scc <- readRDS(sccFile)
@@ -46,8 +47,8 @@ scc <- readRDS(sccFile)
 # For the present analysis a "motor vehicle" is deemed a mobile source which is
 # descibed as a bus, truck, vehicle or a motorcycle, powered by either diesel or 
 # gasoline fuel.
-# Excluded are therefore aircrafts, vessels, construction equippment, agriculture
-# or garden equippment, etc. Excluded are also emissions not related to motor
+# Excluded are therefore aircrafts, vessels, construction equipment, agriculture
+# or garden equipment, etc. Excluded are also emissions not related to motor
 # fuel combustion, e.g. dust emitted from paved/unpaved roads, etc.
 # This decision is based on the assumption that because the area of interest in
 # Question 5 is an urban area, the interpretation of "motor vehicle" is that of
@@ -69,22 +70,28 @@ subscc <- scc[smobile & (struck | sbus | svehi | smoto),]
 subpm <- semi_join(pm, subscc, by = "SCC")
 
 # Calculate total coal combustion-related emissions per measurement year
-motorvehi <- subpm %>% filter(fips == BaltimoreFips) %>% group_by(year) %>% summarise(Emissions = sum(Emissions))
+motorvehi <- subpm %>% filter(fips %in% c(BaltimoreFips, LACountyFips)) %>% group_by(fips, year) %>% summarise(Emissions = sum(Emissions))
 
-# Plot the emissions levels vs. year along with the linear regression line
+# Question 6 is related to the change over the years and its comparision between
+# LA and Baltimore county. Hence we anchor plots for both counties on the relative
+# emission level of 0 tons in 1999. Let's do the level shift in a simple way:
+
+center <- c(rep(motorvehi$Emissions[1],4), rep(motorvehi$Emissions[5],4))
+motorvehi$Emissions <- motorvehi$Emissions - center
+
+# Plot semi-normalized emissions levels vs. year
 #
-# Design decision: As PM25 emissions can be cotrolled only "approximately"
-# (due to high number of influencing factors) as a user of this grpah I'd be 
-# more interested in the trend over years rather than in the exact shape of
-# the emissions curve. Hence the yearly emisions are marked as points 
-# and a trend line (linear regression) is added.
+# Design decision: In order to compare the changes in emissions between the two
+# locations a composite line plot was chosen. Relative data anchored at 0 tons
+# emission in 1999 is plotted.
 
 png(pngFile, width = 640)
-ggpl <- ggplot(data = motorvehi, aes(year, Emissions))
-ggpl <- ggpl + geom_point(size = 4, color = "darkgreen")
-ggpl <- ggpl + geom_smooth(method = "lm", se = F, color = "darkgreen")
-ggpl <- ggpl + ylab("Emissions [tons]")
-ggpl <- ggpl + ggtitle(expression('Baltimore City PM'[2.5]*' Motor Vehicle-related Emission in Years 1999-2008'))
+ggpl <- ggplot(data = motorvehi, aes(year, Emissions, color = fips))
+ggpl <- ggpl + geom_point(size = 4, alpha = 1/2)
+ggpl <- ggpl + geom_line()
+ggpl <- ggpl + ylab("Emission change [tons]")
+ggpl <- ggpl + ggtitle(expression('Baltimore vs. LA PM'[2.5]*' Motor Vehicle-related Emission Change from 1999 to 2008'))
 ggpl <- ggpl + scale_x_continuous(breaks = motorvehi$year, labels = motorvehi$year)
+ggpl <- ggpl + scale_colour_discrete(name = "County", labels = c("LA", "Baltimore"))
 ggpl
 dev.off()
