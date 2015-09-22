@@ -51,7 +51,7 @@ scc <- readRDS(sccFile)
 # fuel combustion, e.g. dust emitted from paved/unpaved roads, etc.
 # This decision is based on the assumption that because the area of interest in
 # Question 5 is an urban area, the interpretation of "motor vehicle" is that of
-# a motor-powered vehicle used for any kind of ground transportation.
+# a motor-powered vehicle used for any kind of road transportation.
 # This decision led to the selection of SCC codes which describe "Mobile Sources"
 # on Level One and bus or vehicle or truck or motorcycle on Level Three.
 # (This selection leads basically to Level Two Highway Vehicles without
