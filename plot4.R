@@ -68,7 +68,7 @@ ggpl <- ggplot(data = coalcomb, aes(year, Emissions))
 ggpl <- ggpl + geom_point(size = 8, shape = 18)
 ggpl <- ggpl + geom_line(size = 2, linetype = 4)
 ggpl <- ggpl + ylab("Emissions [tons]")
-ggpl <- ggpl + ggtitle(expression('U.S. Total PM'[2.5]*' Carbon Combustion-related Emission in Years 1999-2008'))
+ggpl <- ggpl + ggtitle(expression('U.S. Total PM'[2.5]*' Coal Combustion-related Emission in Years 1999-2008'))
 ggpl <- ggpl + theme(plot.title = element_text(hjust = 0.5))
 ggpl <- ggpl + scale_x_continuous(breaks = coalcomb$year, labels = coalcomb$year)
 ggpl
