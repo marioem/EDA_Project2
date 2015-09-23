@@ -34,11 +34,15 @@ BaltimoreFips <- "24510"
 pm <- readRDS(summaryFile)
 
 # Calculate total emissions levels in Baltimore City for each year
+# Some of the SCC codes bear notion of "Total" or "All" (those ending with "000").
+# This suggests that it can be some kind of subsum. A random check of a certain
+# series didn't confirm this, so for the purpose of this assignment I assume it
+# is OK to sum over SCCs without excluding suspected subsums.
 baltpmtot <- pm %>% filter(fips == BaltimoreFips) %>% group_by(year) %>% summarise(Emissions = sum(Emissions))
 
 # Plot the emissions levels vs. year along with the linear regression line
 #
-# Design decision: As PM25 emissions can be cotrolled only "approximately"
+# Design decision: As PM25 emissions can be controlled only "approximately"
 # (due to high number of influencing factors) as a user of this grpah I'd be 
 # more interested in the trend over years rather than in the exact shape of
 # the emissions curve. Hence the yearly emisions are marked as points 

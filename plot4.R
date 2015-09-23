@@ -51,6 +51,10 @@ subscc <- scc[scoal & scomb,]
 subpm <- semi_join(pm, subscc, by = "SCC")
 
 # Calculate total coal combustion-related emissions per measurement year
+# Some of the SCC codes bear notion of "Total" or "All" (those ending with "000").
+# This suggests that it can be some kind of subsum. A random check of a certain
+# series didn't confirm this, so for the purpose of this assignment I assume it
+# is OK to sum over SCCs without excluding suspected subsums.
 coalcomb <- subpm %>% group_by(year) %>% summarise(Emissions = sum(Emissions))
 
 
