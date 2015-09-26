@@ -8,7 +8,7 @@
 # 
 # This script generates a plot of PM25 emissions in US related to coal combustion
 # related sources, in years 1999-2008.
-# ggplot2 grapics system is used.
+# ggplot2 graphics system is used.
 # Original data is available at: https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip
 # More information about data: http://www.epa.gov/ttn/chief/eiinformation.html
 # 
@@ -42,7 +42,7 @@ scc <- readRDS(sccFile)
 # Coal combustion related data are identified based on SCC codes for which variable
 # EI.Sector contains both word "Coal" (case sensitive) and particle "comb" (case
 # insensitive). Two logical vectors are generated, for each pattern in separation.
-# Then theis conjunction is used to subset scc dataframe.
+# Then their conjunction is used to subset scc dataframe.
 scoal <- grepl("Coal", scc$EI.Sector)
 scomb <- grepl("comb", scc$EI.Sector, ignore.case = T)
 

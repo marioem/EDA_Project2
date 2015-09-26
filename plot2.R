@@ -8,7 +8,7 @@
 # 
 # This script generates a plot of total PM25 emissions in Baltimore City in years
 # 1999-2008.
-# Base grapics system is used.
+# Base graphics system is used.
 # Original data is available at: https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip
 # More information about data: http://www.epa.gov/ttn/chief/eiinformation.html
 # 
@@ -53,7 +53,7 @@ baltpmtot <- pm %>% filter(fips == BaltimoreFips) %>% group_by(year) %>% summari
 
 png(pngFile)
 plot(baltpmtot, ylab = "Emissions [tons]", xaxt = "n")
-abline(lm(Emissions ~ year, baltpmtot),col = "red")
+abline(lm(Emissions ~ year, baltpmtot), col = "red")
 title(main = expression('Baltimore City Total PM'[2.5]*' Emissions in Years 1999-2008'))
 axis(side = 1, at = baltpmtot$year,labels = T)
 abline(h = seq(par()$yaxp[1], par()$yaxp[2], length.out = par()$yaxp[3] + 1), col="lightgray", lty="dotted")

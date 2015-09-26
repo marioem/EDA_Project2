@@ -9,7 +9,7 @@
 # This script generates a plot of PM25 motor vehicle-related emissions in
 # Baltimore City in years 1999-2008. For detailed discussion of data selection
 # and presentation see comments in the code.
-# ggplot2 grapics system is used.
+# ggplot2 graphics system is used.
 # Original data is available at: https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip
 # More information about data: http://www.epa.gov/ttn/chief/eiinformation.html
 # 
